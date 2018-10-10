@@ -1,0 +1,19 @@
+.weather-input {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 1;
+  min-width: 26vw;
+}
+
+.weather-input__input {
+  padding: 12px;
+  width: 100%;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.weather-list {
+  background: #fff;
+  width: 100%;
+}

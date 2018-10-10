@@ -1,0 +1,21 @@
+.date-selector {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.date-selector__btn {
+  border: none;
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+  background: rgba(0,0,0,.1);
+  cursor: pointer;
+}
+
+.date-selector__btn:hover {
+  background: rgba(0,0,0,.2);
+}
+
+.date-selector__btn--active {
+  background: rgba(0,0,0,.3);
+}
