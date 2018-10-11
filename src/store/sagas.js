@@ -6,6 +6,12 @@ import * as API from './api';
 
 function* asyncWeatherFetch(action) {
   yield call(delay, 800);
+
+  if (!action.payload) {
+    yield put(weatherRequestSucces([]));
+    return;
+  }
+
   try {
     yield put(weatherRequest());
 

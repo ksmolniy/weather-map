@@ -5,12 +5,13 @@ import DateSelector from './DateSelector/DateSelector';
 import WeatherList from './WeatherList/WeatherList';
 import './WeatherInput.css';
 
-const getTimestampRange = (str) => {
-  const multiplier = str === 'today' ? 1 : str === 'tommorow' ? 2 : 3;
-  const startDate = (new Date()).setHours(24*(multiplier - 1), 0, 0, 0);
-  const endDate = (new Date()).setHours(24 * multiplier, 0, 0, 0);
+const filterWeatherByDay = (weather, str) => {
+  const addDays = str === 'today' ? 0 : str === 'tomorrow' ? 1 : 2;
+  const currDate = new Date();
+  const currDay = currDate.getDate();
+  const compiledDate = (new Date(currDate.setDate(currDay + addDays))).getDate();
 
-  return [startDate, endDate];
+  return weather.filter(item => new Date(item.dateTime).getDate() === compiledDate);
 }
 
 class WeatherInput extends PureComponent {
@@ -24,19 +25,20 @@ class WeatherInput extends PureComponent {
   }
 
   render() {
-    const { weather, fetchWeather } = this.props;
+    const { weather, fetchWeather, loading, error } = this.props;
     const { dateFilter } = this.state;
 
-    const [startDate, endDate] = getTimestampRange(dateFilter);
-
-    const filteredWeather = weather.filter(item => item.dt <= endDate && item.dt >= startDate);
+    const filteredWeather = filterWeatherByDay(weather, dateFilter);
 
     return (
       <div className="weather-input">
         <input className="weather-input__input" onChange={fetchWeather} />
         <div className="weather-panel">
           <DateSelector onChange={this.dateFilterChanged} value={dateFilter} />
-          <WeatherList weather={filteredWeather} />
+          { loading && 'Loading...' }
+          { error && 'Request failed' }
+          { weather.length === 0 && !loading && !error && 'Type to start search' }
+          { weather.length !== 0 && <WeatherList weather={filteredWeather} /> }
         </div>
       </div>
     );
@@ -44,7 +46,11 @@ class WeatherInput extends PureComponent {
 } 
 
 
-const mapStateToProps = ({ weather }) => ({ weather });
+const mapStateToProps = ({ weather: { list, loading, error } }) => ({
+  weather: list,
+  loading,
+  error,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   fetchWeather: (e) => dispatch(weatherFetch(e.target.value)),
