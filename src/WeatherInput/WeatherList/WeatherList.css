@@ -1,0 +1,11 @@
+.weather-list {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+}
+
+.weather-list__item {
+  padding: 4px;
+  width: 100px;
+  box-sizing: border-box;
+}

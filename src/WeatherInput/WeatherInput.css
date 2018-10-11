@@ -4,6 +4,7 @@
   left: 24px;
   z-index: 1;
   min-width: 26vw;
+  max-width: 40vw;
 }
 
 .weather-input__input {
@@ -13,7 +14,8 @@
   box-sizing: border-box;
 }
 
-.weather-list {
+.weather-panel {
   background: #fff;
   width: 100%;
+  overflow: hidden;
 }

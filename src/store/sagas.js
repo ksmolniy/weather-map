@@ -10,7 +10,15 @@ function* asyncWeatherFetch(action) {
     yield put(weatherRequest());
 
     const data = yield call(API.get, `forecast?q=${action.payload}`);
-    yield put(weatherRequestSucces(data.list));
+
+    const weather = data.list.map(item => ({
+      weather: item.weather[0].main,
+      temp: item.main.temp - 273.15,
+      dateTime: item.dt_txt,
+      dt: item.dt*1000,
+    }));
+
+    yield put(weatherRequestSucces(weather));
     yield put(mapViewChanged({
       latitude: data.city.coord.lat,
       longitude: data.city.coord.lon,
